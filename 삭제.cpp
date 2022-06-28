@@ -2,17 +2,22 @@
 #include <string>
 using namespace std;
 
-typedef struct node {
-	struct node* left;
-	struct node* right;
+struct telephone {
+	telePointer left;
 	string name;
-} listnode;
+	string number;
+	telePointer right;
+};
+
+typedef struct telephone* telePointer;
 
 typedef struct head {
-	struct node* first;
+	telePointer first;
 }headnode;
 
 void delete_member(headnode* h, string name);
+
+void delete_all(headnode* h);
 
 int main() {
 
@@ -27,7 +32,7 @@ void delete_member(headnode* h, string name) {
 		cout << "삭제할 전화번호가 없습니다.\n";
 		return;
 	}
-	listnode* n = h->first;
+	telePointer n = h->first;
 	while (n != NULL) {
 		if (n->name == name) {
 			if (n == h->first) {
@@ -51,4 +56,15 @@ void delete_member(headnode* h, string name) {
 
 	cout <<"해당 전화번호를 찾지 못하였습니다.("<< name <<")\n"; //탐색 실패
 	return;
+}
+
+void delete_all(headnode* h) {
+	telePointer p=h->first;
+	telePointer trail;
+	while (p) {
+		trail = p;
+		p=p->left;
+		free(trail);
+	}
+	free(h);
 }
